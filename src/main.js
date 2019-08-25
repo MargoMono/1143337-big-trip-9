@@ -1,9 +1,9 @@
-import {menuTemplate} from './components/templates/menuTemplate.js';
-import {filtersTemplate} from './components/templates/filtersTemplate.js';
-import {routeTemplate} from './components/templates/routeTemplate.js';
+import {menuTemplate} from './components/templates/menu-template.js';
+import {filtersTemplate} from './components/templates/filters-template.js';
+import {routeTemplate} from './components/templates/route-template.js';
 
-import {sortTemplate} from './components/templates/sortTemplate.js';
-import {boardTemplate} from './components/templates/boardTemplate.js';
+import {sortTemplate} from './components/templates/sort-template.js';
+import {boardTemplate} from './components/templates/board-template.js';
 
 const massRenderElements = () => {
   return `${sortTemplate()}
