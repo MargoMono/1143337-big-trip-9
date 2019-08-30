@@ -1,16 +1,14 @@
 import {boardEditEventTemplate} from './board-edit-event-template.js';
 import {boardEventTemplate} from "./board-event-template";
 
-const boardEventsListTemplate = () => {
-  let eventsCount = 3;
-  let boardEvents = ``;
-  for (let i = 0; i < eventsCount; i++) {
-    boardEvents += boardEventTemplate();
-  }
-  return boardEvents;
+const boardEventList = (initEventList) => {
+  console.log(initEventList);
+  return initEventList.
+      map((data) => boardEventTemplate(data)).
+      join(``);
 };
 
-export const boardTemplate = () => {
+export const boardTemplate = (initEventList) => {
   return `<ul class="trip-days">
             <li class="trip-days__item  day">
               <div class="day__info">
@@ -19,7 +17,7 @@ export const boardTemplate = () => {
               </div>
 
               <ul class="trip-events__list">
-                  ${boardEventsListTemplate()}
+                  ${boardEventList(initEventList)}
                   ${boardEditEventTemplate()}
               </ul>
             </li>

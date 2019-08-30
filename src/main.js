@@ -5,9 +5,13 @@ import {routeTemplate} from './components/templates/route-template.js';
 import {sortTemplate} from './components/templates/sort-template.js';
 import {boardTemplate} from './components/templates/board-template.js';
 
+import {eventData} from './components/data.js';
+
+const initEventList = Array.from(new Array(3)).map(() => eventData());
+
 const massRenderElements = () => {
   return `${sortTemplate()}
-          ${boardTemplate()}`;
+          ${boardTemplate(initEventList)}`;
 };
 
 const mainControl = document.querySelector(`.trip-main`);
