@@ -3,10 +3,11 @@ import {filtersTemplate} from './components/templates/filters-template.js';
 import {routeTemplate} from './components/templates/route-template.js';
 import {sortTemplate} from './components/templates/sort-template.js';
 import {boardTemplate} from './components/templates/board-template.js';
-import {eventData} from './components/data.js';
+import {eventData, routeData, filtersData} from './components/data.js';
 import {EVENT_COUNT} from './components/constans.js';
 
 const initEventList = Array.from(new Array(EVENT_COUNT)).map(() => eventData());
+const filtersList = filtersData(initEventList);
 
 const initEventListByDate = initEventList.reduce((eventListByDate, event)=>{
   let eventDateInCurrentFormat = new Date(event.beginDate).setHours(0, 0, 0, 0);
@@ -33,7 +34,7 @@ const render = (element, template, place) => {
 };
 
 render(mainControlElement.firstElementChild, menuTemplate(), `afterend`);
-render(mainControlElement.lastElementChild, filtersTemplate(), `afterend`);
-render(mainInfoElement, routeTemplate(), `afterBegin`);
+render(mainControlElement.lastElementChild, filtersTemplate(filtersList), `afterend`);
+render(mainInfoElement, routeTemplate(routeData(initEventList)), `afterBegin`);
 render(tripEventsElement, massRenderElements(), `beforeend`);
 

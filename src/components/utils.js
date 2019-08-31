@@ -35,6 +35,11 @@ const getRandomSeveralDaysFromDate = (date, max) => {
   return date + (getRandomIntWithMax(max) * 24 * 60 * 60 * 1000) * getRandomPlusOrMinus();
 };
 
+const getDataInFormat = (date, format)=>{
+
+}
+
+
 export {
   getRandomIntWithMax,
   getRandomBool,

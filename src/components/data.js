@@ -47,7 +47,11 @@ const getDescription = () => {
 };
 
 const offerNames = () => {
-  return [`Add luggage`, `Switch to comfort class`, `Choose seats`, ` Add meal`];
+  return [
+    `Add luggage`,
+    `Switch to comfort class`,
+    `Choose seats`,
+    ` Add meal`];
 };
 
 const offer = () => {
@@ -70,5 +74,44 @@ const eventData = () => ({
   offers: Array.from(new Array(getRandomIntWithMax(2))).map(() => offer()),
 });
 
+const routeData = (eventList) => {
+  let eventDateDestination = {};
+  eventList.forEach((event) => {
+    eventDateDestination[event.beginDate] = event.destination;
+  });
+  let route = {
+    'beginDate' : Object.keys(eventDateDestination)[0],
+    'endDate' : Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length-1],
+  };
+  if (Object.keys(eventDateDestination).length > 3) {
+    route.destination = eventDateDestination[Object.keys(eventDateDestination)[0]] + '...' + eventDateDestination[Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length-1]];
+  } else {
+    route.destination = Object.keys(eventDateDestination).map((eventDate) => `${eventDateDestination[eventDate]}`).join(`-`);
+}
+  return route;
+};
 
-export {eventData};
+const filtersData = (eventList) => {
+
+  const everythingEventListCount = eventList.length;
+
+  let pastEventListCount = 0;
+  let futureEventListCount = 0;
+
+  eventList.forEach((event) => {
+    if (event.beginDate < Date.now()) {
+      pastEventListCount++;
+    }
+    if (event.beginDate > Date.now()) {
+      futureEventListCount++;
+    }
+  });
+
+  return [
+    {title: `everything`, count: everythingEventListCount},
+    {title: `past`, count: pastEventListCount},
+    {title: `future`, count: futureEventListCount},
+  ];
+};
+
+export {eventData, routeData, filtersData};
