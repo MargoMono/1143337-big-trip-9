@@ -42,7 +42,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                         <label class="visually-hidden" for="event-start-time-1">
                           From
                         </label>
-                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(beginDate).getUTCDate()}/${new Date(beginDate).getUTCMonth()}/${new Date(beginDate).getFullYear() }">
+                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(beginDate).getDate()}/${new Date(beginDate).getUTCMonth()}/${new Date(beginDate).getFullYear() }">
                         &mdash;
                         <label class="visually-hidden" for="event-end-time-1">
                           To

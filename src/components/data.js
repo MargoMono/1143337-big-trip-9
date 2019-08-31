@@ -76,18 +76,24 @@ const eventData = () => ({
 
 const routeData = (eventList) => {
   let eventDateDestination = {};
+  let totalPrice = 0;
   eventList.forEach((event) => {
     eventDateDestination[event.beginDate] = event.destination;
+    event.offers.forEach((eventOffer) => {
+      totalPrice += eventOffer.price;
+    });
+    totalPrice += event.price;
   });
   let route = {
-    'beginDate' : Object.keys(eventDateDestination)[0],
-    'endDate' : Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length-1],
+    'beginDate': Object.keys(eventDateDestination)[0],
+    'endDate': Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length - 1],
+    'totalPrice': totalPrice,
   };
   if (Object.keys(eventDateDestination).length > 3) {
-    route.destination = eventDateDestination[Object.keys(eventDateDestination)[0]] + '...' + eventDateDestination[Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length-1]];
+    route.destination = eventDateDestination[Object.keys(eventDateDestination)[0]] + `...` + eventDateDestination[Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length - 1]];
   } else {
     route.destination = Object.keys(eventDateDestination).map((eventDate) => `${eventDateDestination[eventDate]}`).join(`-`);
-}
+  }
   return route;
 };
 
