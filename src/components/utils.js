@@ -16,17 +16,23 @@ const getMixArrayValue = (array) => {
   });
 };
 
-function getRandomArrayValue(array) {
+const getRandomObjectKeyPropertyValues = (obj) => {
+  const key = getRandomArrayValue(Object.keys(obj));
+  return {
+    [key]: obj[key]
+  };
+};
+
+const getRandomArrayValue = (array) => {
   return array[Math.floor(Math.random() * array.length)];
-}
+};
 
 const getRandomArrayValues = (array, maxValuesCount) => {
   return getMixArrayValue(array).slice(0, getRandomIntWithMax(maxValuesCount));
 };
 
 const getRandomSeveralDaysFromDate = (date, max) => {
-  return date + (getRandomIntWithMax(max) * 24 * 60 * 60 * 1000) *
-      getRandomPlusOrMinus();
+  return date + (getRandomIntWithMax(max) * 24 * 60 * 60 * 1000) * getRandomPlusOrMinus();
 };
 
 export {
@@ -36,4 +42,5 @@ export {
   getRandomArrayValues,
   getRandomSeveralDaysFromDate,
   getRandomArrayValue,
+  getRandomObjectKeyPropertyValues,
 };

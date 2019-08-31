@@ -1,17 +1,26 @@
 import {menuTemplate} from './components/templates/menu-template.js';
 import {filtersTemplate} from './components/templates/filters-template.js';
 import {routeTemplate} from './components/templates/route-template.js';
-
 import {sortTemplate} from './components/templates/sort-template.js';
 import {boardTemplate} from './components/templates/board-template.js';
-
 import {eventData} from './components/data.js';
+import {EVENT_COUNT} from './components/constans.js';
 
-const initEventList = Array.from(new Array(3)).map(() => eventData());
+const initEventList = Array.from(new Array(EVENT_COUNT)).map(() => eventData());
+
+const initEventListByDate = initEventList.reduce((eventListByDate, event)=>{
+  let eventDateInCurrentFormat = new Date(event.beginDate).setHours(0, 0, 0, 0);
+  if (eventListByDate[eventDateInCurrentFormat]) {
+    eventListByDate[eventDateInCurrentFormat].push(event);
+  } else {
+    eventListByDate[eventDateInCurrentFormat] = [event];
+  }
+  return eventListByDate;
+}, {});
 
 const massRenderElements = () => {
   return `${sortTemplate()}
-          ${boardTemplate(initEventList)}`;
+          ${boardTemplate(initEventListByDate)}`;
 };
 
 const mainControl = document.querySelector(`.trip-main`);
