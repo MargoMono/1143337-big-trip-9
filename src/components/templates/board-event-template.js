@@ -17,7 +17,7 @@ export const boardEventTemplate = ({activitiesAndTypes, destination, price, offe
                         &mdash;
                         <time class="event__end-time" datetime="">${new Date(beginDate + hoursToEndDate).getHours()}:${new Date(beginDate + hoursToEndDate).getMinutes()}</time>
                       </p>
-                      <p class="event__duration">${new Date(hoursToEndDate).getHours()}H ${new Date(hoursToEndDate).getMinutes()}M</p>
+                      <p class="event__duration">${new Date(hoursToEndDate).getUTCHours()}H ${new Date(hoursToEndDate).getUTCMinutes()}M</p>
                     </div>
 
                     <p class="event__price">
