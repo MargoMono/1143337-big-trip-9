@@ -35,10 +35,13 @@ const getRandomSeveralDaysFromDate = (date, max) => {
   return date + (getRandomIntWithMax(max) * 24 * 60 * 60 * 1000) * getRandomPlusOrMinus();
 };
 
-const getDataInFormat = (date, format)=>{
+const getRandomSeveralHours = (max) => {
+  return (getRandomIntWithMax(max) * 60 * 60 * 1000);
+};
 
-}
-
+const ucFirst = (str) => {
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 export {
   getRandomIntWithMax,
@@ -48,4 +51,6 @@ export {
   getRandomSeveralDaysFromDate,
   getRandomArrayValue,
   getRandomObjectKeyPropertyValues,
+  getRandomSeveralHours,
+  ucFirst,
 };

@@ -1,4 +1,8 @@
-export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, price, description, offers, beginDate}) => {
+import {
+  ucFirst,
+} from '../utils.js';
+
+export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, price, description, offers, beginDate, hoursToEndDate}) => {
   return `<form class="event  event--edit" action="#" method="post">
                     <header class="event__header">
                       <div class="event__type-wrapper">
@@ -28,7 +32,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
 
                       <div class="event__field-group  event__field-group--destination">
                         <label class="event__label  event__type-output" for="event-destination-1">
-                          ${Object.keys(activitiesAndTypes)} ${activitiesAndTypes[Object.keys(activitiesAndTypes)]} 
+                         ${ucFirst(Object.keys(activitiesAndTypes)[0])} ${activitiesAndTypes[Object.keys(activitiesAndTypes)]} 
                         </label>
                         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Saint Petersburg" list="destination-list-1">
                         <datalist id="destination-list-1">
@@ -42,12 +46,12 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                         <label class="visually-hidden" for="event-start-time-1">
                           From
                         </label>
-                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(beginDate).getDate()}/${new Date(beginDate).getUTCMonth()}/${new Date(beginDate).getFullYear() }">
+                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(beginDate).getDate()}/${new Date(beginDate).getUTCMonth()}/${new Date(beginDate).getFullYear()} ${new Date(beginDate).getHours()}:${new Date(beginDate).getMinutes()}">
                         &mdash;
                         <label class="visually-hidden" for="event-end-time-1">
                           To
                         </label>
-                        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+                        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${new Date(beginDate + hoursToEndDate).getDate()}/${new Date(beginDate + hoursToEndDate).getUTCMonth()}/${new Date(beginDate + hoursToEndDate).getFullYear()} ${new Date(beginDate + hoursToEndDate).getHours()}:${new Date(beginDate + hoursToEndDate).getMinutes()}">
                       </div>
 
                       <div class="event__field-group  event__field-group--price">

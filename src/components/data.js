@@ -5,6 +5,7 @@ import {
   getRandomBool,
   getRandomArrayValues,
   getRandomSeveralDaysFromDate,
+  getRandomSeveralHours,
 } from './utils.js';
 
 const getTypes = () => {
@@ -69,12 +70,12 @@ const eventData = () => ({
   destination: getRandomArrayValue(getDestination()),
   description: getRandomArrayValues(getDescription(), 3),
   beginDate: getRandomSeveralDaysFromDate(Date.now(), 7),
-  endDate: eventData.beginDate,
+  hoursToEndDate: getRandomSeveralHours(3),
   price: getRandomIntWithMax(50),
   offers: Array.from(new Array(getRandomIntWithMax(2))).map(() => offer()),
 });
 
-const routeData = (eventList) => {
+const summaryData = (eventList) => {
   let eventDateDestination = {};
   let totalPrice = 0;
   eventList.forEach((event) => {
@@ -84,17 +85,23 @@ const routeData = (eventList) => {
     });
     totalPrice += event.price;
   });
-  let route = {
-    'beginDate': Object.keys(eventDateDestination)[0],
-    'endDate': Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length - 1],
+
+  let eventDateDestinationSort = {};
+  Object.keys(eventDateDestination).sort().forEach((key) => {
+    eventDateDestinationSort[key] = eventDateDestination[key];
+  });
+
+  let data = {
+    'beginDate': Object.keys(eventDateDestinationSort)[0],
+    'endDate': Object.keys(eventDateDestinationSort)[Object.keys(eventDateDestinationSort).length - 1],
     'totalPrice': totalPrice,
   };
-  if (Object.keys(eventDateDestination).length > 3) {
-    route.destination = eventDateDestination[Object.keys(eventDateDestination)[0]] + `...` + eventDateDestination[Object.keys(eventDateDestination)[Object.keys(eventDateDestination).length - 1]];
+  if (Object.keys(eventDateDestinationSort).length > 3) {
+    data.destination = eventDateDestinationSort[Object.keys(eventDateDestinationSort)[0]] + `...` + eventDateDestinationSort[Object.keys(eventDateDestinationSort)[Object.keys(eventDateDestinationSort).length - 1]];
   } else {
-    route.destination = Object.keys(eventDateDestination).map((eventDate) => `${eventDateDestination[eventDate]}`).join(`-`);
+    data.destination = Object.keys(eventDateDestinationSort).map((eventDate) => `${eventDateDestinationSort[eventDate]}`).join(`-`);
   }
-  return route;
+  return data;
 };
 
 const filtersData = (eventList) => {
@@ -120,4 +127,4 @@ const filtersData = (eventList) => {
   ];
 };
 
-export {eventData, routeData, filtersData};
+export {eventData, summaryData, filtersData};
