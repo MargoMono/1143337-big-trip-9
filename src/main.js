@@ -1,13 +1,31 @@
 import {menuTemplate} from './components/templates/menu-template.js';
 import {filtersTemplate} from './components/templates/filters-template.js';
 import {routeTemplate} from './components/templates/route-template.js';
-
 import {sortTemplate} from './components/templates/sort-template.js';
 import {boardTemplate} from './components/templates/board-template.js';
+import {eventData, summaryData, filtersData} from './components/data.js';
+import {EVENT_COUNT} from './components/constans.js';
+
+const initEventList = Array.from(new Array(EVENT_COUNT)).map(() => eventData());
+const filtersList = filtersData(initEventList);
+
+const initEventListByDate = initEventList.reduce((eventListByDate, event) => {
+  let eventDateInCurrentFormat = Number(new Date(event.beginDate).setHours(0, 0, 0, 0));
+  if (eventListByDate[eventDateInCurrentFormat]) {
+    eventListByDate[eventDateInCurrentFormat].push(event);
+  } else {
+    eventListByDate[eventDateInCurrentFormat] = [event];
+  }
+  let eventListByDateSort = {};
+  Object.keys(eventListByDate).sort().forEach((key) => {
+    eventListByDateSort[key] = eventListByDate[key];
+  });
+  return eventListByDateSort;
+}, {});
 
 const massRenderElements = () => {
   return `${sortTemplate()}
-          ${boardTemplate()}`;
+          ${boardTemplate(initEventListByDate)}`;
 };
 
 const mainControl = document.querySelector(`.trip-main`);
@@ -20,7 +38,7 @@ const render = (element, template, place) => {
 };
 
 render(mainControlElement.firstElementChild, menuTemplate(), `afterend`);
-render(mainControlElement.lastElementChild, filtersTemplate(), `afterend`);
-render(mainInfoElement, routeTemplate(), `afterBegin`);
+render(mainControlElement.lastElementChild, filtersTemplate(filtersList), `afterend`);
+render(mainInfoElement, routeTemplate(summaryData(initEventList)), `afterBegin`);
 render(tripEventsElement, massRenderElements(), `beforeend`);
 
