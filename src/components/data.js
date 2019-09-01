@@ -63,7 +63,7 @@ const offer = () => {
   };
 };
 
-const eventData = () => ({
+const getEventData = () => ({
   activitiesAndTypes: getRandomObjectKeyPropertyValues(getActivitiesAndTypes()),
   activities: getActivity(),
   types: getTypes(),
@@ -75,15 +75,10 @@ const eventData = () => ({
   offers: Array.from(new Array(getRandomIntWithMax(2))).map(() => offer()),
 });
 
-const summaryData = (eventList) => {
+const getTripRouteData = (eventList) => {
   let eventDateDestination = {};
-  let totalPrice = 0;
   eventList.forEach((event) => {
     eventDateDestination[event.beginDate] = event.destination;
-    event.offers.forEach((eventOffer) => {
-      totalPrice += eventOffer.price;
-    });
-    totalPrice += event.price;
   });
 
   let eventDateDestinationSort = {};
@@ -94,7 +89,6 @@ const summaryData = (eventList) => {
   let data = {
     'beginDate': Object.keys(eventDateDestinationSort)[0],
     'endDate': Object.keys(eventDateDestinationSort)[Object.keys(eventDateDestinationSort).length - 1],
-    'totalPrice': totalPrice,
   };
   if (Object.keys(eventDateDestinationSort).length > 3) {
     data.destination = eventDateDestinationSort[Object.keys(eventDateDestinationSort)[0]] + `...` + eventDateDestinationSort[Object.keys(eventDateDestinationSort)[Object.keys(eventDateDestinationSort).length - 1]];
@@ -102,6 +96,17 @@ const summaryData = (eventList) => {
     data.destination = Object.keys(eventDateDestinationSort).map((eventDate) => `${eventDateDestinationSort[eventDate]}`).join(`-`);
   }
   return data;
+};
+
+const getTotalPrice = (eventMocks) => {
+  let totalPrice = 0;
+  eventMocks.forEach((eventMock) => {
+    eventMock.offers.forEach((eventMockOffer) => {
+      totalPrice += eventMockOffer.price;
+    });
+    totalPrice += eventMock.price;
+  });
+  return totalPrice;
 };
 
 const filtersData = (eventList) => {
@@ -127,4 +132,4 @@ const filtersData = (eventList) => {
   ];
 };
 
-export {eventData, summaryData, filtersData};
+export {getEventData, getTripRouteData, filtersData, getTotalPrice};

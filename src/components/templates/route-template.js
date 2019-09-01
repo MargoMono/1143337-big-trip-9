@@ -1,11 +1,26 @@
-export const routeTemplate = ({beginDate, endDate, destination, totalPrice}) => {
-  return `<div class="trip-info__main">
-              <h1 class="trip-info__title">${destination}</h1>
+import {createElement} from "../utils";
 
-              <p class="trip-info__dates">${new Date(Number(beginDate)).getMonth()}/${new Date(Number(beginDate)).getDate()} - ${new Date(Number(endDate)).getMonth()}/${new Date(Number(endDate)).getDate()}</p>
-            </div>
-            <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalPrice}</span>
-            </p>
-`;
-};
+class TripRoute {
+  constructor({beginDate, endDate, destination}) {
+    this._beginDate = beginDate;
+    this._endDate = endDate;
+    this._destination = destination;
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<div class="trip-info__main">
+              <h1 class="trip-info__title">${this._destination}</h1>
+              <p class="trip-info__dates">${new Date(Number(this._beginDate)).getMonth()}/${new Date(Number(this._beginDate)).getDate()} - ${new Date(Number(this._endDate)).getMonth()}/${new Date(Number(this._endDate)).getDate()}</p>
+            </div>`;
+  }
+}
+
+export {TripRoute};

@@ -1,44 +1,69 @@
-import {menuTemplate} from './components/templates/menu-template.js';
-import {filtersTemplate} from './components/templates/filters-template.js';
-import {routeTemplate} from './components/templates/route-template.js';
-import {sortTemplate} from './components/templates/sort-template.js';
-import {boardTemplate} from './components/templates/board-template.js';
-import {eventData, summaryData, filtersData} from './components/data.js';
+import {getEventData, getTripRouteData, filtersData, getTotalPrice} from './components/data.js';
 import {EVENT_COUNT} from './components/constans.js';
+import {Menu} from './components/templates/menu-template';
+import {SortEvents} from './components/templates/sort-template';
+import {TripRoute} from './components/templates/route-template';
+import {Filters} from './components/templates/filters-template';
+import {Board} from './components/templates/board-template';
+import {TotalPrice} from './components/templates/total-price-template';
+import {Event} from './components/templates/board-event-template.js';
+import {EditEvent} from './components/templates/board-edit-event-template';
+import {render, Position} from './components/utils';
 
-const initEventList = Array.from(new Array(EVENT_COUNT)).map(() => eventData());
-const filtersList = filtersData(initEventList);
+const eventMocks = Array.from(new Array(EVENT_COUNT)).map(() => getEventData());
+const filtersList = filtersData(eventMocks);
 
-const initEventListByDate = initEventList.reduce((eventListByDate, event) => {
+const eventMocksByDate = eventMocks.reduce((eventListByDate, event) => {
   let eventDateInCurrentFormat = Number(new Date(event.beginDate).setHours(0, 0, 0, 0));
   if (eventListByDate[eventDateInCurrentFormat]) {
     eventListByDate[eventDateInCurrentFormat].push(event);
   } else {
     eventListByDate[eventDateInCurrentFormat] = [event];
   }
-  let eventListByDateSort = {};
+  let eventMocksByDateSort = {};
   Object.keys(eventListByDate).sort().forEach((key) => {
-    eventListByDateSort[key] = eventListByDate[key];
+    eventMocksByDateSort[key] = eventListByDate[key];
   });
-  return eventListByDateSort;
+  return eventMocksByDateSort;
 }, {});
 
-const massRenderElements = () => {
-  return `${sortTemplate()}
-          ${boardTemplate(initEventListByDate)}`;
-};
-
 const mainControl = document.querySelector(`.trip-main`);
-const mainControlElement = mainControl.querySelector(`.trip-main__trip-controls`);
 const mainInfoElement = mainControl.querySelector(`.trip-main__trip-info`);
+const mainControlElement = mainControl.querySelector(`.trip-main__trip-controls`);
 const tripEventsElement = document.querySelector(`.trip-events`);
 
-const render = (element, template, place) => {
-  element.insertAdjacentHTML(place, template);
+const tripRoute = new TripRoute(getTripRouteData(eventMocks));
+const totalPrice = new TotalPrice(getTotalPrice(eventMocks));
+const menu = new Menu();
+const filters = new Filters(filtersList);
+const sortEvents = new SortEvents();
+const board = new Board(eventMocksByDate);
+
+render(mainInfoElement, tripRoute.getElement(), Position.BEFOREEND);
+render(mainInfoElement, totalPrice.getElement(), Position.BEFOREEND);
+render(mainControlElement, menu.getElement(), Position.BEFOREEND);
+render(mainControlElement, filters.getElement(), Position.BEFOREEND);
+render(tripEventsElement, sortEvents.getElement(), Position.BEFOREEND);
+render(tripEventsElement, board.getElement(), Position.BEFOREEND);
+
+const renderEventMock = (eventMock) => {
+  const event = new Event(eventMock);
+  const editEvent = new EditEvent(eventMock);
+
+  event.getElement()
+    .querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+      tripEventsElement.replaceChild(editEvent.getElement(), event.getElement());
+    });
+
+  editEvent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    tripEventsElement.replaceChild(event.getElement(), editEvent.getElement());
+  });
+
+  render(tripEventsElement, board.getElement(), Position.BEFOREEND);
+
+  render(tripEventsElement, event.getElement(), Position.BEFOREEND);
 };
 
-render(mainControlElement.firstElementChild, menuTemplate(), `afterend`);
-render(mainControlElement.lastElementChild, filtersTemplate(filtersList), `afterend`);
-render(mainInfoElement, routeTemplate(summaryData(initEventList)), `afterBegin`);
-render(tripEventsElement, massRenderElements(), `beforeend`);
+eventMocks.forEach((eventMock) => renderEventMock(eventMock));
+
 

@@ -1,9 +1,30 @@
 import {
   ucFirst,
+  createElement,
 } from '../utils.js';
 
-export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, price, description, offers, beginDate, hoursToEndDate}) => {
-  return `<form class="event  event--edit" action="#" method="post">
+class EditEvent {
+  constructor({activitiesAndTypes, activities, types, price, description, offers, beginDate, hoursToEndDate}) {
+    this._activitiesAndTypes = activitiesAndTypes;
+    this._activities = activities;
+    this._types = types;
+    this._price = price;
+    this._description = description;
+    this._offers = offers;
+    this._beginDate = beginDate;
+    this._hoursToEndDate = hoursToEndDate;
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<form class="event  event--edit" action="#" method="post">
                     <header class="event__header">
                       <div class="event__type-wrapper">
                         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -15,14 +36,14 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                         <div class="event__type-list">
                           <fieldset class="event__type-group">
                             <legend class="visually-hidden">Transfer</legend>
-                          ${Object.keys(types).map((type) => `<div class="event__type-item">
+                          ${Object.keys(this._types).map((type) => `<div class="event__type-item">
                               <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
                               <label class="event__type-label  event__type-label--${type}" for="event-type-taxi-1">${type}</label>
                             </div>`).join(``)}    
                           </fieldset>
                           <fieldset class="event__type-group">
                             <legend class="visually-hidden">Activity</legend>
-                          ${Object.keys(activities).map((activity) => `<div class="event__type-item">
+                          ${Object.keys(this._activities).map((activity) => `<div class="event__type-item">
                               <input id="event-type-${activity}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${activity}">
                               <label class="event__type-label  event__type-label--${activity}" for="event-type-taxi-1">${activity}</label>
                             </div>`).join(``)}    
@@ -32,7 +53,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
 
                       <div class="event__field-group  event__field-group--destination">
                         <label class="event__label  event__type-output" for="event-destination-1">
-                         ${ucFirst(Object.keys(activitiesAndTypes)[0])} ${activitiesAndTypes[Object.keys(activitiesAndTypes)]} 
+                         ${ucFirst(Object.keys(this._activitiesAndTypes)[0])} ${this._activitiesAndTypes[Object.keys(this._activitiesAndTypes)]} 
                         </label>
                         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Saint Petersburg" list="destination-list-1">
                         <datalist id="destination-list-1">
@@ -46,12 +67,12 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                         <label class="visually-hidden" for="event-start-time-1">
                           From
                         </label>
-                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(beginDate).getDate()}/${new Date(beginDate).getUTCMonth()}/${new Date(beginDate).getFullYear()} ${new Date(beginDate).getHours()}:${new Date(beginDate).getMinutes()}">
+                        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${new Date(this._beginDate).getDate()}/${new Date(this._beginDate).getUTCMonth()}/${new Date(this._beginDate).getFullYear()} ${new Date(this._beginDate).getHours()}:${new Date(this._beginDate).getMinutes()}">
                         &mdash;
                         <label class="visually-hidden" for="event-end-time-1">
                           To
                         </label>
-                        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${new Date(beginDate + hoursToEndDate).getDate()}/${new Date(beginDate + hoursToEndDate).getUTCMonth()}/${new Date(beginDate + hoursToEndDate).getFullYear()} ${new Date(beginDate + hoursToEndDate).getHours()}:${new Date(beginDate + hoursToEndDate).getMinutes()}">
+                        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${new Date(this._beginDate + this._hoursToEndDate).getDate()}/${new Date(this._beginDate + this._hoursToEndDate).getUTCMonth()}/${new Date(this._beginDate + this._hoursToEndDate).getFullYear()} ${new Date(this._beginDate + this._hoursToEndDate).getHours()}:${new Date(this._beginDate + this._hoursToEndDate).getMinutes()}">
                       </div>
 
                       <div class="event__field-group  event__field-group--price">
@@ -59,7 +80,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                           <span class="visually-hidden">Price</span>
                           &euro;
                         </label>
-                        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+                        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${this._price}">
                       </div>
 
                       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -84,7 +105,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                         <div class="event__available-offers">
-                          ${offers.map((offer) => `
+                          ${this._offers.map((offer) => `
                         <div class="event__offer-selector">
                             <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${offer.flag ? `checked` : ``} >
                             <label class="event__offer-label" for="event-offer-luggage-1">
@@ -98,7 +119,7 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
 
                       <section class="event__section  event__section--destination">
                         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                        <p class="event__destination-description">${description}</p>
+                        <p class="event__destination-description">${this._description}</p>
 
                         <div class="event__photos-container">
                           <div class="event__photos-tape">
@@ -113,5 +134,9 @@ export const boardEditEventTemplate = ({activitiesAndTypes, activities, types, p
                       </section>
                     </section>
                   </form>`;
-};
+  }
+}
+
+export {EditEvent};
+
 
