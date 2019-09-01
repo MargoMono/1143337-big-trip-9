@@ -3,7 +3,7 @@ import {
   createElement,
 } from '../utils.js';
 
-class Event {
+class TripEvent {
   constructor({activitiesAndTypes, destination, price, offers, beginDate, hoursToEndDate}) {
     this._activitiesAndTypes = activitiesAndTypes;
     this._destination = destination;
@@ -19,6 +19,10 @@ class Event {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 
   getTemplate() {
@@ -45,12 +49,11 @@ class Event {
 
                     <h4 class="visually-hidden">Offers:</h4>
                     <ul class="event__selected-offers">
-                      ${this._offers.map((offer) => `
-                       <li class="event__offer">
+                      ${this._offers.map((offer) => offer.flag ? `<li class="event__offer">
                         <span class="event__offer-title">${offer.name}</span>
                         &plus;
                         &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
-                       </li>`).join(``)}        
+                       </li>` : ``).join(``)}        
                        </li>
                     </ul>
 
@@ -62,4 +65,4 @@ class Event {
   }
 }
 
-export {Event};
+export {TripEvent};

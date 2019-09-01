@@ -13,6 +13,10 @@ class Filters {
     return this._element;
   }
 
+  removeElement() {
+    this._element = null;
+  }
+
   getFilerTemplate({title, count}) {
     return `<div class="trip-filteSwitch trip viewrs__filter">
                 <input id="filter-${title}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${title}" checked>

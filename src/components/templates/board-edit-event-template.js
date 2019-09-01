@@ -3,12 +3,13 @@ import {
   createElement,
 } from '../utils.js';
 
-class EditEvent {
-  constructor({activitiesAndTypes, activities, types, price, description, offers, beginDate, hoursToEndDate}) {
+class TripEditEvent {
+  constructor({activitiesAndTypes, activities, types, price, destination, description, offers, beginDate, hoursToEndDate}) {
     this._activitiesAndTypes = activitiesAndTypes;
     this._activities = activities;
     this._types = types;
     this._price = price;
+    this._destination = destination;
     this._description = description;
     this._offers = offers;
     this._beginDate = beginDate;
@@ -21,6 +22,10 @@ class EditEvent {
       this._element = createElement(this.getTemplate());
     }
     return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 
   getTemplate() {
@@ -55,7 +60,7 @@ class EditEvent {
                         <label class="event__label  event__type-output" for="event-destination-1">
                          ${ucFirst(Object.keys(this._activitiesAndTypes)[0])} ${this._activitiesAndTypes[Object.keys(this._activitiesAndTypes)]} 
                         </label>
-                        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Saint Petersburg" list="destination-list-1">
+                        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._destination}" list="destination-list-1">
                         <datalist id="destination-list-1">
                           <option value="Amsterdam"></option>
                           <option value="Geneva"></option>
@@ -137,6 +142,6 @@ class EditEvent {
   }
 }
 
-export {EditEvent};
+export {TripEditEvent};
 
 

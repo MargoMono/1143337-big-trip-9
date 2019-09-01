@@ -15,6 +15,10 @@ class TripRoute {
     return this._element;
   }
 
+  removeElement() {
+    this._element = null;
+  }
+
   getTemplate() {
     return `<div class="trip-info__main">
               <h1 class="trip-info__title">${this._destination}</h1>

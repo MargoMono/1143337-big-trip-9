@@ -6,8 +6,8 @@ import {TripRoute} from './components/templates/route-template';
 import {Filters} from './components/templates/filters-template';
 import {Board} from './components/templates/board-template';
 import {TotalPrice} from './components/templates/total-price-template';
-import {Event} from './components/templates/board-event-template.js';
-import {EditEvent} from './components/templates/board-edit-event-template';
+import {TripEvent} from './components/templates/board-event-template.js';
+import {TripEditEvent} from './components/templates/board-edit-event-template';
 import {render, Position} from './components/utils';
 
 const eventMocks = Array.from(new Array(EVENT_COUNT)).map(() => getEventData());
@@ -37,33 +37,36 @@ const totalPrice = new TotalPrice(getTotalPrice(eventMocks));
 const menu = new Menu();
 const filters = new Filters(filtersList);
 const sortEvents = new SortEvents();
-const board = new Board(eventMocksByDate);
 
 render(mainInfoElement, tripRoute.getElement(), Position.BEFOREEND);
 render(mainInfoElement, totalPrice.getElement(), Position.BEFOREEND);
 render(mainControlElement, menu.getElement(), Position.BEFOREEND);
 render(mainControlElement, filters.getElement(), Position.BEFOREEND);
 render(tripEventsElement, sortEvents.getElement(), Position.BEFOREEND);
-render(tripEventsElement, board.getElement(), Position.BEFOREEND);
 
-const renderEventMock = (eventMock) => {
-  const event = new Event(eventMock);
-  const editEvent = new EditEvent(eventMock);
+const renderEventMock = (board, eventMock) => {
+  const tripEvent = new TripEvent(eventMock);
+  const tripEditEvent = new TripEditEvent(eventMock);
+  const tripEventsList = board.getElement().querySelector(`.trip-events__list`);
 
-  event.getElement()
-    .querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-      tripEventsElement.replaceChild(editEvent.getElement(), event.getElement());
-    });
-
-  editEvent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    tripEventsElement.replaceChild(event.getElement(), editEvent.getElement());
+  tripEvent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    tripEventsList.replaceChild(tripEditEvent.getElement(), tripEvent.getElement());
   });
 
-  render(tripEventsElement, board.getElement(), Position.BEFOREEND);
+  tripEditEvent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    tripEventsList.replaceChild(tripEvent.getElement(), tripEditEvent.getElement());
+  });
 
-  render(tripEventsElement, event.getElement(), Position.BEFOREEND);
+  tripEditEvent.getElement().addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    tripEventsList.replaceChild(tripEvent.getElement(), tripEditEvent.getElement());
+  });
+
+  render(tripEventsList, tripEvent.getElement(), Position.BEFOREEND);
 };
 
-eventMocks.forEach((eventMock) => renderEventMock(eventMock));
-
-
+Object.keys(eventMocksByDate).map((date, index) => {
+  const board = new Board(date, index + 1);
+  render(tripEventsElement, board.getElement(), Position.BEFOREEND);
+  eventMocksByDate[date].forEach((eventMock) => renderEventMock(board, eventMock));
+});

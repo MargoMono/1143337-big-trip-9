@@ -13,6 +13,10 @@ class TotalPrice {
     return this._element;
   }
 
+  removeElement() {
+    this._element = null;
+  }
+
   getTemplate() {
     return `<p class="trip-info__cost">
               Total: &euro;&nbsp;<span class="trip-info__cost-value">${this._totalPrice}</span>
