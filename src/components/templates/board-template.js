@@ -1,27 +1,24 @@
 import {boardEditEventTemplate} from './board-edit-event-template.js';
 import {boardEventTemplate} from "./board-event-template";
 
-const boardEventsListTemplate = () => {
-  let eventsCount = 3;
-  let boardEvents = ``;
-  for (let i = 0; i < eventsCount; i++) {
-    boardEvents += boardEventTemplate();
-  }
-  return boardEvents;
+const boardEventList = (initEventList) => {
+  return initEventList.
+  map((data) => boardEventTemplate(data)).
+  join(``);
 };
 
-export const boardTemplate = () => {
+export const boardTemplate = (eventListByDate) => {
   return `<ul class="trip-days">
+            ${Object.keys(eventListByDate).map((day, index) => `      
             <li class="trip-days__item  day">
               <div class="day__info">
-                <span class="day__counter">1</span>
-                <time class="day__date" datetime="2019-03-18">MAR 18</time>
+                <span class="day__counter">${index + 1}</span>
+                <time class="day__date" datetime="">${new Date(Number(day)).getMonth()} / ${new Date(Number(day)).getDate()}</time>
               </div>
-
               <ul class="trip-events__list">
-                  ${boardEventsListTemplate()}
-                  ${boardEditEventTemplate()}
+                 ${index === 0 ? (boardEditEventTemplate(eventListByDate[day].splice(0, 1)[0])) : ``}
+                 ${boardEventList(eventListByDate[day])}
               </ul>
-            </li>
+            </li>`).join(``)}  
           </ul>`;
 };
