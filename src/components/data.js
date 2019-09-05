@@ -12,15 +12,18 @@ const getTypes = () => {
   return {
     'bus': `to`,
     'drive': `to`,
-    'ship': `to`,
+    'flight': `to`,
+    'taxi': `to`,
+    'train': `to`,
+    'transport': `to`,
   };
 };
 
 const getActivity = () => {
   return {
-    'restaurant': `to`,
-    'check-in': `to`,
-    'sightseeing': `at`,
+    'restaurant': `in`,
+    'check-in': `in`,
+    'sightseeing': `in`,
   };
 };
 
