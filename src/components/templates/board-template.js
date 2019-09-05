@@ -1,21 +1,10 @@
-import {createElement} from "../utils";
+import {AbstractComponent} from '../absctract-component';
 
-class Board {
+class Board extends AbstractComponent {
   constructor(date, i) {
+    super();
     this._date = date;
     this._i = i;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

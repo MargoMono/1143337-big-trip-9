@@ -1,10 +1,11 @@
+import {AbstractComponent} from '../absctract-component.js';
 import {
   ucFirst,
-  createElement,
 } from '../utils.js';
 
-class TripEditEvent {
+class TripEditEvent extends AbstractComponent {
   constructor({activitiesAndTypes, activities, types, price, destination, description, offers, beginDate, hoursToEndDate}) {
+    super();
     this._activitiesAndTypes = activitiesAndTypes;
     this._activities = activities;
     this._types = types;
@@ -14,18 +15,6 @@ class TripEditEvent {
     this._offers = offers;
     this._beginDate = beginDate;
     this._hoursToEndDate = hoursToEndDate;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

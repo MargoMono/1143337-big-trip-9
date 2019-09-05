@@ -1,22 +1,11 @@
-import {createElement} from "../utils";
+import {AbstractComponent} from '../absctract-component';
 
-class TripRoute {
+class TripRoute extends AbstractComponent {
   constructor({beginDate, endDate, destination}) {
+    super();
     this._beginDate = beginDate;
     this._endDate = endDate;
     this._destination = destination;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {
