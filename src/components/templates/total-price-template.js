@@ -1,7 +1,8 @@
 import {createElement} from "../utils";
 
-class Menu {
-  constructor() {
+class TotalPrice {
+  constructor(totalPrice) {
+    this._totalPrice = totalPrice;
     this._element = null;
   }
 
@@ -17,11 +18,10 @@ class Menu {
   }
 
   getTemplate() {
-    return `<nav class="trip-controls__trip-tabs  trip-tabs">
-              <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-              <a class="trip-tabs__btn" href="#">Stats</a>
-            </nav>`;
+    return `<p class="trip-info__cost">
+              Total: &euro;&nbsp;<span class="trip-info__cost-value">${this._totalPrice}</span>
+            </p>`;
   }
 }
 
-export {Menu};
+export {TotalPrice};

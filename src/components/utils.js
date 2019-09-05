@@ -43,6 +43,34 @@ const ucFirst = (str) => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+const Position = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+const render = (container, element, place) => {
+  switch (place) {
+    case Position.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Position.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
+
 export {
   getRandomIntWithMax,
   getRandomBool,
@@ -53,4 +81,8 @@ export {
   getRandomObjectKeyPropertyValues,
   getRandomSeveralHours,
   ucFirst,
+  createElement,
+  Position,
+  render,
+  unrender
 };

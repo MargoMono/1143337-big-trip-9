@@ -1,24 +1,35 @@
-import {boardEditEventTemplate} from './board-edit-event-template.js';
-import {boardEventTemplate} from "./board-event-template";
+import {createElement} from "../utils";
 
-const boardEventList = (initEventList) => {
-  return initEventList.
-  map((data) => boardEventTemplate(data)).
-  join(``);
-};
+class Board {
+  constructor(date, i) {
+    this._date = date;
+    this._i = i;
+    this._element = null;
+  }
 
-export const boardTemplate = (eventListByDate) => {
-  return `<ul class="trip-days">
-            ${Object.keys(eventListByDate).map((day, index) => `      
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `<ul class="trip-days">
             <li class="trip-days__item  day">
               <div class="day__info">
-                <span class="day__counter">${index + 1}</span>
-                <time class="day__date" datetime="">${new Date(Number(day)).getMonth()} / ${new Date(Number(day)).getDate()}</time>
+                <span class="day__counter">${this._i}</span>
+                <time class="day__date" datetime="">${new Date(Number(this._date)).getMonth()} / ${new Date(Number(this._date)).getDate()}</time>
               </div>
               <ul class="trip-events__list">
-                 ${index === 0 ? (boardEditEventTemplate(eventListByDate[day].splice(0, 1)[0])) : ``}
-                 ${boardEventList(eventListByDate[day])}
               </ul>
-            </li>`).join(``)}  
+            </li>  
           </ul>`;
-};
+  }
+}
+
+export {Board};
