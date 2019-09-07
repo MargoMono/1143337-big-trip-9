@@ -10,10 +10,15 @@ class TripController {
   }
 
   init() {
-    Object.keys(this._eventMocksByDate(this._eventMocks)).map((date, index) => {
+    const eventListByDate = this._eventMocksByDate(this._eventMocks);
+    let eventMocksByDateSort = {};
+    Object.keys(eventListByDate).sort().forEach((key) => {
+      eventMocksByDateSort[key] = eventListByDate[key];
+    });
+    Object.keys(eventMocksByDateSort).map((date, index) => {
       const board = new Board(date, index + 1);
       render(this._container, board.getElement(), Position.BEFOREEND);
-      this._eventMocksByDate(this._eventMocks)[date].forEach(
+      eventMocksByDateSort[date].forEach(
           (eventMock) => this._renderEventMock(board, eventMock));
     });
   }
@@ -26,11 +31,8 @@ class TripController {
       } else {
         eventListByDate[eventDateInCurrentFormat] = [event];
       }
-      let eventMocksByDateSort = {};
-      Object.keys(eventListByDate).sort().forEach((key) => {
-        eventMocksByDateSort[key] = eventListByDate[key];
-      });
-      return eventMocksByDateSort;
+
+      return eventListByDate;
     }, {});
   }
 
